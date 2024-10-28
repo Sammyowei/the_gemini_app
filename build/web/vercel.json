@@ -1,0 +1,15 @@
+{
+    "redirects": [
+        {
+            "source": "/projects/:projectName/assets/:filePath",
+            "destination": "/assets/html/:filePath",
+            "permanent": true
+        }
+    ],
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/"
+        }
+    ]
+}
