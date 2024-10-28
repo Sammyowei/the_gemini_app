@@ -3,15 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'package:the_gemini_app/src/domain/config/routes/route_name_config.dart';
 import 'package:the_gemini_app/src/presentation/presentation.dart';
-import 'package:the_gemini_app/src/presentation/utils/presistence/persistence.dart';
+
 import 'package:the_gemini_app/src/presentation/views/onboarding/onboarding_screen_one.dart';
 import 'package:the_gemini_app/src/presentation/views/onboarding/onboarding_screen_three.dart';
 import 'package:the_gemini_app/src/presentation/views/onboarding/onboarding_screen_two.dart';
 import 'package:the_gemini_app/src/presentation/widgets/gemini/gemini_app_widget.dart';
-import 'package:the_gemini_app/src/presentation/widgets/supabase/supabase_inherited_widget.dart';
 
 /// A screen widget for onboarding users.
 class OnboardingScreen extends StatefulWidget {
@@ -95,30 +94,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 },
               ),
             ),
-//             Align(
-//               alignment: const Alignment(0, 0.77),
-//               child: Padding(
-//                 padding: EdgeInsets.only(left: 20.w, right: 20.w),
-//                 child: MaterialButton(
-//                   onPressed: () async {
-
-//                   },
-//                   color: theme.colorScheme.primary,
-//                   minWidth: MediaQuery.of(context).size.width,
-//                   height: 48.h,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(12),
-//                   ),
-//                   child: Text(
-//                     'Next',
-//                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-//                           color: Colors.white,
-//                         ),
-//                   ),
-//                 ),
-//               ),
-//             )
-
             Align(
               alignment: const Alignment(0, 0.77),
               child: Padding(

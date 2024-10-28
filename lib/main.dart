@@ -52,8 +52,6 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      useInheritedMediaQuery: true,
-      ensureScreenSize: true,
       builder: (context, child) {
         return child!;
       },
