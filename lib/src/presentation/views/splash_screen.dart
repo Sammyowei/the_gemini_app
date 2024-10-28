@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,7 +121,7 @@ class _SplashScreenState extends State<SplashScreen>
                     tag: 'logo',
                     child: Image.asset(
                       IconConstants.appIcons,
-                      color: Palette.primaryColor,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
                 );
@@ -224,9 +225,11 @@ class _SecondScreenState extends State<SecondScreen> {
           }
         } else {
           context.pushReplacementNamed(RouteNameConfig.authScreen);
+          return;
         }
       } else {
         context.pushReplacementNamed(RouteNameConfig.home_page);
+        return;
       }
     });
   }

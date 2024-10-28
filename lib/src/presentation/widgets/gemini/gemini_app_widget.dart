@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -24,7 +25,7 @@ class GeminiAppWidget extends StatelessWidget {
               IconConstants.appIcons,
               height: 20.h,
               // Set the color of the app logo.
-              color: const Color(0xff2F66F6),
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
           Gap(5.w),
@@ -36,7 +37,7 @@ class GeminiAppWidget extends StatelessWidget {
               fontSize: 18.sp,
               fontWeight: FontWeight.w800,
               // Set the color of the app name text.
-              color: const Color(0xff2F66F6),
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
         ],
