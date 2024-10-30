@@ -1,3 +1,4 @@
+import 'package:avatar_plus/avatar_plus.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -6,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:the_gemini_app/src/data/models/user_model.dart';
 
 import 'package:the_gemini_app/src/domain/config/routes/route_name_config.dart';
 import 'package:the_gemini_app/src/presentation/presentation.dart';
@@ -33,16 +35,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           backgroundColor: Theme.of(context).colorScheme.background,
           title: const GeminiAppWidget(),
           elevation: 0,
-          leading: Icon(
-            Icons.account_circle_outlined,
-            color: Theme.of(context).colorScheme.secondary,
-            size: 25.h,
+          leading: GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: AvatarPlus(
+                "Samuelson Owei",
+              ),
+            ),
           ),
           actions: [
-            Icon(
-              Icons.notifications,
-              size: 25.h,
-              color: Theme.of(context).colorScheme.secondary,
+            GestureDetector(
+              onTap: () {
+                context.pushNamed(RouteNameConfig.notification_screen);
+              },
+              child: Icon(
+                Icons.notifications,
+                size: 25.h,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
             ),
             Gap(10.w),
           ],
@@ -208,11 +218,7 @@ class _HomeBodyState extends ConsumerState<HomeBody> {
                 ),
                 CustomButton(
                   onTap: () async {
-                    await MySupabaseConfig.of(context)
-                        .supabase
-                        .client
-                        .auth
-                        .signOut();
+                    context.pushNamed(RouteNameConfig.wallet_page_section);
                   },
                   size: Size(40.w, 40.h),
                   color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
@@ -241,6 +247,10 @@ class _HomeBodyState extends ConsumerState<HomeBody> {
             Gap(15.h),
             _coolButton(
               context,
+              ontap: () {
+                context.pushNamed(RouteNameConfig.investment_page,
+                    queryParameters: {'id': 'crypto'});
+              },
               amount: getInvestmentsBalance(
                 userModel,
               ),
@@ -251,6 +261,10 @@ class _HomeBodyState extends ConsumerState<HomeBody> {
             Gap(10.h),
             _coolButton(
               context,
+              ontap: () {
+                context.pushNamed(RouteNameConfig.investment_page,
+                    queryParameters: {'id': 'capital'});
+              },
               amount: getInvestmentsBalance(userModel, 'capital'),
               title: 'Capital Ventures',
               color: Theme.of(context).colorScheme.primaryContainer,
@@ -259,6 +273,10 @@ class _HomeBodyState extends ConsumerState<HomeBody> {
             Gap(10.h),
             _coolButton(
               context,
+              ontap: () {
+                context.pushNamed(RouteNameConfig.investment_page,
+                    queryParameters: {'id': 'ai/tesla'});
+              },
               amount: getInvestmentsBalance(userModel, 'ai/tesla'),
               title: 'Smart AI Investment',
               color: Theme.of(context).colorScheme.secondaryContainer,
@@ -386,7 +404,9 @@ Widget _coolButton(
 }
 
 class WalletBody extends StatefulWidget {
-  const WalletBody({super.key});
+  const WalletBody({
+    super.key,
+  });
 
   @override
   State<WalletBody> createState() => _WalletBodyState();
@@ -408,14 +428,19 @@ class _WalletBodyState extends State<WalletBody> {
                   ),
             ),
             Gap(10.h),
-            _coolButton(
-              ontap: () =>
-                  context.pushNamed(RouteNameConfig.wallet_page_section),
-              context,
-              amount: 17000000,
-              title: 'USD Wallet',
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              icon: Icons.wallet_rounded,
+            Consumer(
+              builder: (context, ref, child) {
+                final userModel = ref.watch(userModelsProvider);
+                return _coolButton(
+                  ontap: () =>
+                      context.pushNamed(RouteNameConfig.wallet_page_section),
+                  context,
+                  amount: getUsdWalletBalance(userModel),
+                  title: 'USD Wallet',
+                  color: Theme.of(context).colorScheme.secondaryContainer,
+                  icon: Icons.wallet_rounded,
+                );
+              },
             ),
             Gap(10.h),
             _coolButton(

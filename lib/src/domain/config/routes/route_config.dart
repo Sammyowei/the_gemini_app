@@ -9,16 +9,36 @@ import 'package:the_gemini_app/src/presentation/views/auth_screen/sign_up/passwo
 import 'package:the_gemini_app/src/presentation/views/auth_screen/sign_up/sign_up_onboarding_screen.dart';
 import 'package:the_gemini_app/src/presentation/views/home/deposit_screen.dart';
 import 'package:the_gemini_app/src/presentation/views/home/home_screen.dart';
+import 'package:the_gemini_app/src/presentation/views/home/investment_page_screen.dart';
+import 'package:the_gemini_app/src/presentation/views/home/notification_screen.dart';
 import 'package:the_gemini_app/src/presentation/views/home/wallet_page.dart';
 import 'package:the_gemini_app/src/presentation/views/onboard_user/contact_detail.dart';
 import 'package:the_gemini_app/src/presentation/views/onboard_user/onboard_user.dart';
 import 'package:the_gemini_app/src/presentation/views/views.dart';
+import 'package:the_gemini_app/src/presentation/widgets/supabase/supabase_inherited_widget.dart';
 import 'package:the_gemini_app/src/providers/state_notifier_provider/string_state_notifier_provider.dart';
 
 // Define an abstract class for routing configuration.
 abstract class RoutingConfig {
   // Static member to hold the router configuration.
   static GoRouter router = GoRouter(
+    redirect: (context, state) {
+      MySupabaseConfig.of(context)
+          .supabase
+          .client
+          .auth
+          .onAuthStateChange
+          .listen((event) {
+        final session = event.session;
+
+        if (session == null) {
+          context.goNamed(
+            RouteNameConfig.authScreen,
+          );
+        }
+      });
+      return null;
+    },
     routes: [
       // Define the initial route.
       GoRoute(
@@ -143,6 +163,30 @@ abstract class RoutingConfig {
           return DepositScreenPage(
             url: url,
           );
+        },
+      ),
+      GoRoute(
+        path: RoutePathConfig.investment_page,
+        name: RouteNameConfig.investment_page,
+        builder: (context, state) {
+          final investmentType = state.uri.queryParameters['id'];
+          String id = 'id';
+          if (investmentType == null) {
+            id = 'crypto';
+          } else {
+            id = investmentType;
+          }
+
+          return InvestmentScreen(
+            investmentType: id,
+          );
+        },
+      ),
+      GoRoute(
+        path: RoutePathConfig.notification_screen,
+        name: RouteNameConfig.notification_screen,
+        builder: (context, state) {
+          return const NotificationScreen();
         },
       )
     ],

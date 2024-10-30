@@ -10,7 +10,6 @@ import 'package:the_gemini_app/src/presentation/presentation.dart';
 import 'package:the_gemini_app/src/presentation/views/onboarding/onboarding_screen_one.dart';
 import 'package:the_gemini_app/src/presentation/views/onboarding/onboarding_screen_three.dart';
 import 'package:the_gemini_app/src/presentation/views/onboarding/onboarding_screen_two.dart';
-import 'package:the_gemini_app/src/presentation/widgets/gemini/gemini_app_widget.dart';
 
 /// A screen widget for onboarding users.
 class OnboardingScreen extends StatefulWidget {
@@ -55,10 +54,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Stack(
           children: [
-            const Align(
-              alignment: Alignment.topCenter,
-              child: GeminiAppWidget(),
-            ),
             PageView.builder(
               controller: _controller,
               itemCount: pages.length,
@@ -97,7 +92,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             Align(
               alignment: const Alignment(0, 0.77),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20).w,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: CustomButton(
                   onTap: () async {
                     // Action to perform when the button is pressed.

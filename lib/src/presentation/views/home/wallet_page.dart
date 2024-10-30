@@ -8,6 +8,7 @@ import 'package:the_gemini_app/src/data/models/transaction.dart';
 import 'package:the_gemini_app/src/data/models/user_model.dart';
 import 'package:the_gemini_app/src/presentation/presentation.dart';
 import 'package:the_gemini_app/src/presentation/views/home/deposit_screen.dart';
+import 'package:the_gemini_app/src/presentation/views/home/withdrawal_screen.dart';
 
 import 'package:the_gemini_app/src/providers/state_notifier_provider/user_state_notifier_provider.dart';
 
@@ -118,7 +119,9 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                                   .colorScheme
                                   .primary
                                   .withOpacity(.2),
-                              onTap: () {},
+                              onTap: () {
+                                showWithdrawalButton(context);
+                              },
                               widget: Icon(
                                 Icons.remove,
                                 color: Theme.of(context).colorScheme.primary,
@@ -291,53 +294,62 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                                                           FontWeight.w200,
                                                     ),
                                               ),
-                                              trailing:
-                                                  Builder(builder: (context) {
-                                                final isDeposit = element
-                                                        .transactionType
-                                                        .toLowerCase()
-                                                        .contains('deposit') ||
-                                                    element.transactionType
-                                                        .toLowerCase()
-                                                        .contains('payout');
+                                              trailing: Builder(
+                                                builder: (context) {
+                                                  final isDeposit = element
+                                                          .transactionType
+                                                          .toLowerCase()
+                                                          .contains(
+                                                              'deposit') ||
+                                                      element.transactionType
+                                                          .toLowerCase()
+                                                          .contains('payout');
 
-                                                final currencyFormatter =
-                                                    NumberFormat.currency(
-                                                  name: 'USD',
-                                                  locale: 'En_US',
-                                                  symbol: '\$',
-                                                );
-                                                return Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      '${isDeposit ? '+' : '-'}${currencyFormatter.format(element.amount)}',
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyLarge
-                                                          ?.copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w100,
-                                                          ),
-                                                    ),
-                                                    Text(
-                                                      element.status
-                                                          .toLowerCase(),
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodySmall
-                                                          ?.copyWith(
-                                                              color: !(element
-                                                                          .status
-                                                                          .toLowerCase() ==
-                                                                      'failed')
-                                                                  ? Colors.green
-                                                                  : Colors.red),
-                                                    )
-                                                  ],
-                                                );
-                                              }),
+                                                  final currencyFormatter =
+                                                      NumberFormat.currency(
+                                                    name: 'USD',
+                                                    locale: 'En_US',
+                                                    symbol: '\$',
+                                                  );
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        '${isDeposit ? '+' : '-'}${currencyFormatter.format(element.amount)}',
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodyLarge
+                                                            ?.copyWith(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w100,
+                                                            ),
+                                                      ),
+                                                      Text(
+                                                        element.status
+                                                            .toLowerCase(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .bodySmall
+                                                            ?.copyWith(
+                                                                color: (element
+                                                                            .status
+                                                                            .toLowerCase() ==
+                                                                        'processing')
+                                                                    ? Colors
+                                                                        .orange
+                                                                    : !(element.status.toLowerCase() ==
+                                                                            'failed')
+                                                                        ? Colors
+                                                                            .green
+                                                                        : Colors
+                                                                            .red),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -379,8 +391,9 @@ num getUsdWalletBalance(UserModels? users) {
   for (var element in walletTransactions) {
     final isDeposit = element.transactionType.toLowerCase().contains('deposit');
     final isSuccessful = element.status.toLowerCase() == 'successful';
+    final isPending = element.status.toLowerCase() == 'processing';
 
-    if (isSuccessful) {
+    if (isSuccessful || isPending) {
       if (isDeposit) {
         amount += element.amount;
       } else {
@@ -418,8 +431,24 @@ void depositButton(BuildContext context) {
   showModalBottomSheet(
     context: context,
     showDragHandle: true,
+    isScrollControlled: true,
     builder: (context) {
-      return const DepositScreen();
+      return const FractionallySizedBox(
+          heightFactor: .7, child: DepositScreen());
+    },
+  );
+}
+
+void showWithdrawalButton(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    showDragHandle: true,
+    isScrollControlled: true,
+    builder: (context) {
+      return const FractionallySizedBox(
+        heightFactor: 0.8,
+        child: WithdrawalScreen(),
+      );
     },
   );
 }
@@ -488,6 +517,14 @@ num getInvestmentsBalance(UserModels? users, [String keyword = 'crypto']) {
   }
   // check to see if the number of buy in are greater than the number of payout
 
+  if (payoutTransactions.isEmpty && buyInTransactions.isNotEmpty) {
+    num amount = 0;
+    for (var transaction in buyInTransactions) {
+      amount += transaction.amount;
+    }
+
+    return amount;
+  }
   num amount = 0;
 
   if (buyInTransactions.length > payoutTransactions.length) {

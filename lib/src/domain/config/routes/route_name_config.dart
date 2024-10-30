@@ -13,6 +13,9 @@ abstract class RouteNameConfig {
   static String contactDetail = 'contact_detail';
   static String home_page = 'home_page';
   static String wallet_page = 'wallet';
+  static String investment_page = 'investment';
   static String wallet_page_section = 'wallet_page';
   static String deposit_screen = 'deposit-screen';
+  static String notification_screen = 'notifications';
+  static String profile_screen = 'profile';
 }

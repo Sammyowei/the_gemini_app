@@ -12,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:the_gemini_app/src/domain/config/routes/route_name_config.dart';
 import 'package:the_gemini_app/src/presentation/presentation.dart';
 import 'package:the_gemini_app/src/presentation/widgets/supabase/supabase_inherited_widget.dart';
+import 'package:the_gemini_app/src/providers/future_providers/user_future_provider.dart';
 
 import 'package:the_gemini_app/src/providers/state_notifier_provider/boolean_state_notifier_provider.dart';
 import 'package:http/http.dart' as http;
@@ -23,6 +24,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS/macOS features.
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 class DepositScreen extends ConsumerStatefulWidget {
   const DepositScreen({super.key});
@@ -201,6 +203,15 @@ class _DepositScreenState extends ConsumerState<DepositScreen> {
                                 } else {
                                   context.pushNamed(
                                       RouteNameConfig.deposit_screen);
+
+                                  ref
+                                      .read(amountFieldValidatorStateProvider
+                                          .notifier)
+                                      .toggleOff();
+                                  ref
+                                      .read(
+                                          amountValidatorStateProvider.notifier)
+                                      .toggleOff();
                                 }
                               } on HttpException catch (e) {
                                 print(e.message);
@@ -254,6 +265,14 @@ class DepositScreenPage extends ConsumerStatefulWidget {
 class _DepositScreenPageState extends ConsumerState<DepositScreenPage> {
   late final WebViewController _controller;
 
+  final PlatformWebViewController _webController = PlatformWebViewController(
+    const PlatformWebViewControllerCreationParams(),
+  )..loadRequest(
+      LoadRequestParams(
+        uri: Uri.parse('https://flutter.dev'),
+      ),
+    );
+
   @override
   void initState() {
     super.initState();
@@ -300,6 +319,8 @@ Page resource error:
                 request.url == ('https://example.com/success')) {
               debugPrint('blocking navigation to ${request.url}');
 
+              ref.refresh(userFutureProvider(context));
+
               context.pop();
               return NavigationDecision.prevent;
             }
@@ -344,9 +365,21 @@ Page resource error:
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () async {
+            ref.refresh(userFutureProvider(context));
+            await _controller.goBack();
+            context.pop();
+          },
+          child: const Icon(Icons.cancel_outlined),
+        ),
         title: Text(Uri.parse(widget.url).host),
       ),
-      body: WebViewWidget(controller: _controller),
+      body: kIsWeb
+          ? PlatformWebViewWidget(
+              PlatformWebViewWidgetCreationParams(controller: _webController),
+            ).build(context)
+          : WebViewWidget(controller: _controller),
     );
   }
 }

@@ -221,6 +221,10 @@ class _SecondScreenState extends State<SecondScreen> {
 
         if (loadOnboarding == null || loadOnboarding == false) {
           if (context.mounted) {
+            if (kIsWeb) {
+              context.pushReplacementNamed(RouteNameConfig.authScreen);
+              return;
+            }
             context.pushReplacementNamed(RouteNameConfig.onboarding);
           }
         } else {

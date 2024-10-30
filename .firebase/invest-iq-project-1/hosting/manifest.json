@@ -1,0 +1,35 @@
+{
+    "name": "Invest IQ",
+    "short_name": "Invest IQ",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "Invest IQ is a sophisticated investment platform designed to empower users with the knowledge and tools necessary for high-scale returns. By offering a user-friendly interface, personalized investment plans, and expert insights, Invest IQ enables individuals to make informed financial decisions. Whether you’re looking to invest in traditional markets or explore crypto opportunities, Invest IQ provides a seamless experience to help you maximize your investment potential",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "icons/Icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/Icon-maskable-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        },
+        {
+            "src": "icons/Icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

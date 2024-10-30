@@ -11,8 +11,10 @@ abstract class RoutePathConfig {
   static String onboard_user = '/user/get-started';
   static String contactDetail = '/user/get-started/contact';
   static String home_page = '/user/dashboard';
-
+  static String investment_page = '/user/investment';
   static String wallet_page = '/user/wallet';
   static String wallet_page_section = '/user/dashboard/wallet/usd';
   static String deposit_screen = '/user/dashboard/wallet/usd/deposit';
+  static String notification_screen = '/user/notifications';
+  static String profile_screen = '/user/profile';
 }

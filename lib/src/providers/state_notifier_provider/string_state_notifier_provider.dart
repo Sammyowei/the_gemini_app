@@ -4,3 +4,8 @@ import 'package:the_gemini_app/src/providers/state_notifiers/string_state_notifi
 final urlstateProvider = StateNotifierProvider<StringNotifier, String>((ref) {
   return StringNotifier();
 });
+
+final investmentPickerProvider =
+    StateNotifierProvider<StringNotifier, String>((ref) {
+  return StringNotifier();
+});

@@ -77,3 +77,33 @@ final amountValidatorStateProvider =
     StateNotifierProvider<BooleanNotifier, bool>(
   (ref) => BooleanNotifier(),
 );
+
+final amountFieldValidatorStateProvider2 =
+    StateNotifierProvider<BooleanNotifier, bool>(
+  (ref) => BooleanNotifier(),
+);
+
+final amountValidatorStateProvider2 =
+    StateNotifierProvider<BooleanNotifier, bool>(
+  (ref) => BooleanNotifier(),
+);
+
+final amountFieldValidatorStateProvider3 =
+    StateNotifierProvider<BooleanNotifier, bool>(
+  (ref) => BooleanNotifier(),
+);
+
+final amountValidatorStateProvider3 =
+    StateNotifierProvider<BooleanNotifier, bool>(
+  (ref) => BooleanNotifier(),
+);
+
+final walletFieldValidatorStateProvider =
+    StateNotifierProvider<BooleanNotifier, bool>(
+  (ref) => BooleanNotifier(),
+);
+
+final walletValidatorStateProvider =
+    StateNotifierProvider<BooleanNotifier, bool>(
+  (ref) => BooleanNotifier(),
+);

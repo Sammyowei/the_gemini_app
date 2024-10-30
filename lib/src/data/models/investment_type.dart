@@ -30,8 +30,11 @@ class InvestmentType {
   /// The date and time when this investment type was last updated.
   final DateTime? updatedAt;
 
+  final String category;
+
   /// Creates a new [InvestmentType] instance.
   InvestmentType({
+    this.category = 'crypto',
     required this.id,
     required this.name,
     required this.minimumAmount,
@@ -49,6 +52,7 @@ class InvestmentType {
   factory InvestmentType.fromJson(Map<String, dynamic> json) {
     return InvestmentType(
       id: json['id'],
+      category: json['category'],
       name: json['name'],
       minimumAmount: json['minimum_amount'],
       expectedReturn: json['expected_return'],
@@ -76,6 +80,7 @@ class InvestmentType {
       'expected_return': expectedReturn,
       'duration_days': durationDays,
       'description': description,
+      'category': category,
       'created_at': createdAt != null ? formatter.format(createdAt!) : null,
       'updated_at': updatedAt != null ? formatter.format(updatedAt!) : null,
     };
@@ -85,6 +90,6 @@ class InvestmentType {
   @override
   String toString() {
     return 'InvestmentType(id: $id, name: $name, minimumAmount: $minimumAmount, '
-        'expectedReturn: $expectedReturn, durationDays: $durationDays)';
+        'expectedReturn: $expectedReturn, durationDays: $durationDays, category: $category)';
   }
 }

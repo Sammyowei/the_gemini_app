@@ -8,6 +8,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:the_gemini_app/src/domain/config/config.dart';
 import 'package:the_gemini_app/src/presentation/presentation.dart';
 import 'package:the_gemini_app/src/presentation/widgets/supabase/supabase_inherited_widget.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,8 @@ void main() async {
         overlays: [],
       );
     }
+  } else {
+    WebViewPlatform.instance = WebWebViewPlatform();
   }
 
   // Run the application.
